@@ -1,11 +1,4 @@
 {
-  "expo": {
-    "name": "prototype2-frontend-communication",
-    "slug": "prototype2-frontend-communication",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  },
-  "name": "prototype2-frontend-communication"
+  "name": "prototype2FrontendCommunication",
+  "displayName": "prototype2FrontendCommunication"
 }
