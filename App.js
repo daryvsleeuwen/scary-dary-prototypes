@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StyleSheet, Button} from 'react-native';
+import {SafeAreaView, StyleSheet, Button, View} from 'react-native';
 
 const App: () => Node = () => {
   const sendBackwardRequest = () => {
@@ -18,10 +18,38 @@ const App: () => Node = () => {
     fetch('http://192.168.4.1/forward');
   };
 
+  const sendLeftRequest = () => {
+    fetch('http://192.168.4.1/left');
+  };
+
+  const sendRightRequest = () => {
+    fetch('http://192.168.4.1/right');
+  };
+
   return (
     <SafeAreaView style={styles.pageCenter}>
-      <Button title="Go Backward" style={styles.directionButton} onPress={sendBackwardRequest} />
-      <Button title="Go Forward" style={styles.directionButton} onPress={sendForwardRequest} />
+      <Button
+        title="Go Backward"
+        style={styles.directionButton}
+        onPress={sendBackwardRequest}
+      />
+      <View style={styles.leftRightCenterer}>
+        <Button
+          title="Go Left"
+          style={styles.directionButton}
+          onPress={sendLeftRequest}
+        />
+        <Button
+          title="Go Right"
+          style={styles.directionButton}
+          onPress={sendRightRequest}
+        />
+      </View>
+      <Button
+        title="Go Forward"
+        style={styles.directionButton}
+        onPress={sendForwardRequest}
+      />
     </SafeAreaView>
   );
 };
@@ -34,12 +62,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  leftRightCenterer: {
+    width: '60%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
   directionButton: {
-    width: 160,
-    height: 160,
     borderRadius: 100,
     backgroundColor: 'orange',
-    marginBottom: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
