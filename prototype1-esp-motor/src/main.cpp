@@ -1,4 +1,7 @@
 #include "Arduino.h"
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+
 
 int BAUDRATE = 9600;
 
@@ -10,15 +13,37 @@ int BAUDRATE = 9600;
 
 #define MINIMAL_DELAY 1
 
+const char *ssid = "ScaryDary";
+const char *password = "testtest123";
+
+ESP8266WebServer server(80);
+
+boolean direction = true;
+
+void handleBackward() {
+  direction = false;
+}
+
+void handleForward() {
+  direction = true;
+}
+
 
 void setup() {
+  delay(3000);
   Serial.begin(BAUDRATE);
-
+  Serial.println("START");
   pinMode(A,OUTPUT);
   pinMode(B,OUTPUT);
   pinMode(C,OUTPUT);
   pinMode(D,OUTPUT);
+
+  WiFi.softAP(ssid, password);
+  server.on("/backward", HTTP_GET, handleBackward);
+  server.on("/forward", HTTP_GET, handleForward); // when the server receives a request with /data/ in the string then run the handleSentVar function
+  server.begin();
 }
+
 
 void write(int a,int b,int c,int d){
   digitalWrite(A,a);
@@ -65,10 +90,11 @@ void reverseOneStep() {
 }
 
 void loop(){
-  int i = 0;
-  while(i<NUMBER_OF_STEPS_PER_REV){
+  server.handleClient();
+  if (direction){
+    forwardOneStep();
+  }
+  else{
     reverseOneStep();
-    Serial.println(NUMBER_OF_STEPS_PER_REV);
-    i++;
   }
 }
