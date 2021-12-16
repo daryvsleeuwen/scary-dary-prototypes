@@ -1,3 +1,5 @@
+#include <Stepper.h>
+
 #define LA 5
 #define LB 4
 #define LC 0
@@ -8,7 +10,12 @@
 #define RC 13
 #define RD 15
 
-#define MINIMAL_DELAY 1
+#define speed 100
+#define stepsPerRevolution 100
+
+Stepper myStepperLeft(stepsPerRevolution, LA, LB, LC, LD);
+Stepper myStepperRight(stepsPerRevolution, RA, RB, RC, RD);
+
 
 void initializeMotors(){
   pinMode(LA,OUTPUT);
@@ -19,76 +26,29 @@ void initializeMotors(){
   pinMode(RB,OUTPUT);
   pinMode(RC,OUTPUT);
   pinMode(RD,OUTPUT);
-}
 
-void writeForward(int a,int b,int c,int d, boolean right){
-    if (right) {
-        digitalWrite(RA,a);
-        digitalWrite(RB,b);
-        digitalWrite(RC,c);
-        digitalWrite(RD,d);
-    }else {
-        digitalWrite(LA,a);
-        digitalWrite(LB,b);
-        digitalWrite(LC,c);
-        digitalWrite(LD,d);
-    }
+  if (speed > 0) {
+    myStepperLeft.setSpeed(speed);
+    myStepperRight.setSpeed(speed);
+  }
 }
-
-void forwardOneStep(boolean right){
-  writeForward(1,0,0,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(1,1,0,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,1,0,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,1,1,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,1,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,1,1, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,0,1, right);
-  delay(MINIMAL_DELAY);
-  writeForward(1,0,0,1, right);
-  delay(MINIMAL_DELAY);
-}
-
-void backwardOneStep(boolean right) {
-  writeForward(1,0,0,1, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,0,1, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,1,1, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,0,1,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,1,1,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(0,1,0,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(1,1,0,0, right);
-  delay(MINIMAL_DELAY);
-  writeForward(1,0,0,0, right);
-}
-
 
 void motorsForward(){
-    forwardOneStep(true);
-    forwardOneStep(false);
+    myStepperRight.step(1);
+    myStepperLeft.step(1);
 }
 
 void motorsBackward() {
-    backwardOneStep(true);
-    backwardOneStep(false);
+//    myStepperRight.step(-1);
+//     myStepperLeft.step(-1);
 }
 
 void motorsTurnLeft() {
-    forwardOneStep(false);
+    myStepperRight.step(1);
 }
 
 void motorsTurnRight() {
-    forwardOneStep(true);
+    myStepperLeft.step(1);
 }
 
 

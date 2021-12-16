@@ -3,10 +3,6 @@
 
 int BAUDRATE = 9600;
 
-
-#define NUMBER_OF_STEPS_PER_REV 512
-
-
 const char *ssid = "ScaryDary";
 const char *password = "testtest123";
 
@@ -73,3 +69,4 @@ void loop(){
     motorsBackward();
   }
 }
+
